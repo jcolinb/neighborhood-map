@@ -11,7 +11,7 @@ class App extends Component {
     getMap = () => {
 	this.mapPromise = new Promise((res) => {
 	    window.resolvePromise = () => {
-		resolve(google);
+		res(window.google);
 		delete window.resolvePromise;
 	    };
 
@@ -43,7 +43,7 @@ class App extends Component {
     
     render() {
 	return (
-	    
+	    <div id="map"></div>
 	)
     }
 }
