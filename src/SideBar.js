@@ -1,14 +1,21 @@
 import React, {Component} from 'react';
-import './App.css'
+import SearchBar from './SearchBar'
 class SideBar extends Component {
     state = {
 	searchTerm: '',
 	searchResults: []
     }
 
+    updateTerm = (str) => {
+	this.setState({searchTerm: str});
+    }
+    
     render() {
 	return (
-	<div id="sidebar">CONTROL!!</div>
+		<div id="sidebar">
+		  <SearchBar searchTerm={this.state.searchTerm}
+	                     updateTerm={this.updateTerm}/>
+		</div>
 	)
     }
 }
