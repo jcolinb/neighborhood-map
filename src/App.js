@@ -5,8 +5,12 @@ class App extends Component {
 
     state = {
 	google: {},
-	map: {}
+	map: {},
+	placeIds: [],
+	places: []
     }
+
+    apiKey = 'AIzaSyAGMxGp9l_6X9av7QFCayxjjIejqAdrHjk'
     
     getMap = () => {
 	this.mapPromise = new Promise((res) => {
@@ -16,9 +20,8 @@ class App extends Component {
 	    };
 
 	    const script = document.createElement("script");
-	    const apiKey = 'AIzaSyAUI-YMQ90J-_GUHUbqblgm3q1UyLNlXHg';
 
-	    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=3&&callback=resolvePromise`;
+	    script.src = `https://maps.googleapis.com/maps/api/js?key=${this.apiKey}&v=3&&callback=resolvePromise`;
 	    script.async = true;
 	    script.defer = true;
 	    document.body.appendChild(script);
@@ -39,6 +42,23 @@ class App extends Component {
 	    );
 	    this.setState({google,map});
 	});
+	const url = 'https://api.foursquare.com/v2/venues/explore?';
+	const date = new Date();
+	const formattedDate = `${date.getFullYear()}${(date.getMonth() +1)}${date.getDate()}`;
+	const clientId = 'ZRDNRR3NRFHOQ0EKGVZSCELHE1F4JS1Y1DFXHVSJFARU4GNR';
+	const clientSecret = 'MEDYDO5VJ4F23YFQFYHNAWYCLLOB2FWOMER3YKYCVKLFALX1';
+	fetch(`${url}client_id=${clientId}&client_secret=${clientSecret}&v=${formattedDate}&limit=5&ll=40.014986,-83.011464&radius=1000&section=drinks`)
+	    .then((res) => res.json())
+	    .then(({response}) => response.groups[0].items.map(({venue}) => {
+		return {name: venue.name,
+		 id: venue.id,
+		 address: venue.location.formattedAddress,
+		 lat: venue.location.lat,
+		 lng: venue.location.lng
+		       };
+	    }))
+	    .then((venues) => this.setState({places:venues}))
+	    .catch((err)=> console.log(err));
     }
     
     render() {
