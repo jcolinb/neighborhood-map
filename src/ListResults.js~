@@ -1,0 +1,23 @@
+import React, {Component} from 'react'
+
+class ListResults extends Component {
+    render() {
+	return (
+	    {if (!this.props.searchTerm) {
+		this.props.places.map((place) => {
+		    (<p key={place.id}>{place.name}</p>)
+		});
+	    }
+	     else {
+		 this.props.places.filter((place) => {
+		     place.name.includes(this.props.searchTerm);
+		 }).map((place) => {
+		     (<p key={place.id}>{place.name}</p>)
+		 });
+	     }
+	    }
+	)
+    }
+}
+
+export default ListResults

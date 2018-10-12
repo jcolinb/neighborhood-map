@@ -50,12 +50,13 @@ class App extends Component {
 	fetch(`${url}client_id=${clientId}&client_secret=${clientSecret}&v=${formattedDate}&limit=5&ll=40.014986,-83.011464&radius=1000&section=drinks`)
 	    .then((res) => res.json())
 	    .then(({response}) => response.groups[0].items.map(({venue}) => {
-		return {name: venue.name,
-		 id: venue.id,
-		 address: venue.location.formattedAddress,
-		 lat: venue.location.lat,
-		 lng: venue.location.lng
-		       };
+		return {
+		    name: venue.name.toLowerCase(),
+		    id: venue.id,
+		    address: venue.location.formattedAddress,
+		    lat: venue.location.lat,
+		    lng: venue.location.lng
+		};
 	    }))
 	    .then((venues) => this.setState({places:venues}))
 	    .catch((err)=> console.log(err));
@@ -66,7 +67,7 @@ class App extends Component {
 		<div id="container">
 		
 		<div id="map"></div>
-		<SideBar/>
+		<SideBar places={this.state.places}/>
 		</div>
 	)
     }
