@@ -6,7 +6,6 @@ class App extends Component {
     state = {
 	google: {},
 	map: {},
-	placeIds: [],
 	places: []
     }
 
@@ -26,28 +25,16 @@ class App extends Component {
 	    script.defer = true;
 	    document.body.appendChild(script);
 	});
-	return this.mapPromise;
+
     }
 
-    componentWillMount = this.getMap
-
-    componentDidMount = () => {
-	this.mapPromise.then((google) => {
-	    const map = new google.maps.Map(
-		document.getElementById('map'),
-		{
-		    center: {lat:40.014986, lng:-83.011464},
-		    zoom: 13
-		}
-	    );
-	    this.setState({google,map});
-	});
+    fetchPlaces = () => {
 	const url = 'https://api.foursquare.com/v2/venues/explore?';
 	const date = new Date();
 	const formattedDate = `${date.getFullYear()}${(date.getMonth() +1)}${date.getDate()}`;
 	const clientId = 'ZRDNRR3NRFHOQ0EKGVZSCELHE1F4JS1Y1DFXHVSJFARU4GNR';
 	const clientSecret = 'MEDYDO5VJ4F23YFQFYHNAWYCLLOB2FWOMER3YKYCVKLFALX1';
-	fetch(`${url}client_id=${clientId}&client_secret=${clientSecret}&v=${formattedDate}&limit=5&ll=40.014986,-83.011464&radius=1000&section=drinks`)
+	return fetch(`${url}client_id=${clientId}&client_secret=${clientSecret}&v=${formattedDate}&limit=10&ll=40.014986,-83.011464&radius=1000&section=drinks`)
 	    .then((res) => res.json())
 	    .then(({response}) => response.groups[0].items.map(({venue}) => {
 		return {
@@ -58,8 +45,25 @@ class App extends Component {
 		    lng: venue.location.lng
 		};
 	    }))
-	    .then((venues) => this.setState({places:venues}))
 	    .catch((err)=> console.log(err));
+    }
+    
+    componentWillMount = this.getMap
+
+    componentDidMount = () => {
+	Promise.all([
+	    this.mapPromise.then((google) => {
+		const map = new google.maps.Map(
+		    document.getElementById('map'),
+		    {
+			center: {lat:40.014986, lng:-83.011464},
+			zoom: 13
+		    }
+		);
+		return [google,map];
+	    }),
+	    this.fetchPlaces()
+	]).then(([[google,map],places]) => this.setState({google,map,places}));
     }
     
     render() {
