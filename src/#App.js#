@@ -62,6 +62,8 @@ class App extends Component {
 	});
 	return [google,map,markerizedPlaces];
     }
+
+    
     
     componentWillMount = this.getMap
 
