@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './App.css'
 import SideBar from './SideBar'
+import InfoWindow from './InfoWindow'
 
 class App extends Component {
 
@@ -58,6 +59,11 @@ class App extends Component {
 		    label: place.name
 		}
 	    );
+	    place.infoWindow = new google.maps.infoWindow(
+		{
+		    content: (<InfoWindow location={place}/>)
+		}
+	    );
 	    return place;
 	});
 	return [google,map,markerizedPlaces];
@@ -85,12 +91,10 @@ class App extends Component {
     render() {
 	return (
 		<div id="container">
-		
-		<div id="map"></div>
-		<SideBar places={this.state.places}
-	                 map={this.state.map}
-	                 google={this.state.google}
-		/>
+		  <div id="map"></div>
+		  <SideBar places={this.state.places}
+	                   map={this.state.map}
+	                   google={this.state.google}/>
 		</div>
 	)
     }
