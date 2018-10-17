@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import './App.css'
 import SideBar from './SideBar'
-import InfoWindow from './InfoWindow'
 
 class App extends Component {
 
@@ -59,9 +58,14 @@ class App extends Component {
 		    label: place.name
 		}
 	    );
-	    place.infoWindow = new google.maps.infoWindow(
+	    place.infoWindow = new google.maps.InfoWindow(
 		{
-		    content: (<InfoWindow location={place}/>)
+		    content: `<div id='info-window'>
+	                        <h4>${place.name}</h4>
+	                        <p>${place.address[0]}</p>
+	                        <p>${place.address[1]}</p>
+	                        <p>${place.address[2]}</p>
+	                      </div>`
 		}
 	    );
 	    return place;
