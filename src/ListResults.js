@@ -11,7 +11,8 @@ class ListResults extends Component {
     
     render() {
 	return (
-		<ol>
+	    <div>
+	      <ol>
 		{(!this.props.searchTerm) ? (
 		    
 		    this.props.places.map((place) => {
@@ -41,7 +42,8 @@ class ListResults extends Component {
 		     
 		 )
 		}
-	    </ol>
+	      </ol>
+	    </div>
 	)
     }
 }

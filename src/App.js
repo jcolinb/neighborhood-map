@@ -27,6 +27,13 @@ class App extends Component {
 	});
     }
 
+    photoize = (places) => {
+	return Promise.all(places.map((place) =>
+				      fetch(`https://api.foursquare.com/v2/venues/${place.id}/photos?client_id=ZRDNRR3NRFHOQ0EKGVZSCELHE1F4JS1Y1DFXHVSJFARU4GNR&client_secret=MEDYDO5VJ4F23YFQFYHNAWYCLLOB2FWOMER3YKYCVKLFALX1&limit=1&v=20181010`).then((res) => res.json()))
+			  ).then((photos) => photos.map(({response}) => response.photos.items[0].prefix + '300x300' + response.photos.items[0].suffix))
+	    .then((photoURLs) => places.map((place,i) => {place.photo = photoURLs[i];return place}))
+    }
+    
     fetchPlaces = () => {
 	const url = 'https://api.foursquare.com/v2/venues/explore?';
 	const date = new Date();
@@ -46,8 +53,8 @@ class App extends Component {
 	    }))
 	    .catch((err)=> console.log(err));
     }
-
-    markerize = ([[google,map],places]) => {
+    
+    markerize = ([[google,map],places])  => {
 	const markerizedPlaces = places.map((place) => {
 	    place.marker = new google.maps.Marker(
 		{
@@ -60,8 +67,9 @@ class App extends Component {
 	    );
 	    place.infoWindow = new google.maps.InfoWindow(
 		{
-		    content: `<div id='info-window'>
+		    content: `<div class='info-window'>
 	                        <h4>${place.name}</h4>
+                                <img src=${place.photo}/>
 	                        <p>${place.address[0]}</p>
 	                        <p>${place.address[1]}</p>
 	                        <p>${place.address[2]}</p>
@@ -87,7 +95,7 @@ class App extends Component {
 		);
 		return [google,map];
 	    }),
-	    this.fetchPlaces()
+	    this.fetchPlaces().then(this.photoize)
 	]).then(this.markerize)
 	    .then(([google,map,places]) => this.setState({google,map,places}));
     }
