@@ -6,7 +6,8 @@ class SearchBar extends Component {
 		<input type="text"
 	               value={this.props.searchTerm}
 	               placeholder="search places"
-	               onChange={(e) => this.props.updateTerm(e.target.value)}/>
+	               onChange={(e) => this.props.updateTerm(e.target.value)}
+		       tabIndex="1"/>
 	)
     }
 }

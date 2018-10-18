@@ -95,7 +95,7 @@ class App extends Component {
     render() {
 	return (
 		<div id="container">
-		  <div id="map"></div>
+		  <div id="map" tabIndex="-1"></div>
 		  <SideBar places={this.state.places}
 	                   map={this.state.map}
 	                   google={this.state.google}/>
