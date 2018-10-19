@@ -69,7 +69,7 @@ class App extends Component {
 		{
 		    content: `<div class='info-window'>
 	                        <h4>${place.name}</h4>
-                                <img src=${place.photo}/>
+                                <div style='background-image:${place.photo}' class='venue-photo'></div>
 	                        <p>${place.address[0]}</p>
 	                        <p>${place.address[1]}</p>
 	                        <p>${place.address[2]}</p>
