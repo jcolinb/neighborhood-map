@@ -5,13 +5,14 @@ class ListResults extends Component {
     toggleInfoWindow = (place) => {
 	this.props.places.map((place) => place.infoWindow.close());
 	place.infoWindow.open(this.props.map,place.marker);
+	document.getElementsByClassName('info-window')[0].focus();
     }
 
     componentDidUpdate = () => this.props.places.map((place) => place.infoWindow.close())
     
     render() {
 	return (
-	    <div>
+	    <div id="list-results">
 	      <ol>
 		{(!this.props.searchTerm) ? (
 		    

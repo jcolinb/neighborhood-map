@@ -14,14 +14,25 @@ class SideBar extends Component {
 	    }
 	    return null
 	});
+	if (document.getElementById('sidebar').className === 'sidebar-hidden' && str) {
+	    this.toggleSideBar();
+	}
 	this.setState({searchTerm: str.toLowerCase()});
+    }
+
+    toggleSideBar = () => {
+	const SideBar = document.getElementById('sidebar');
+	(SideBar.className === 'sidebar-hidden') ?
+	    SideBar.className = 'sidebar-shown' :
+	    SideBar.className = 'sidebar-hidden'
     }
 
     render() {
 	return (
-		<div id="sidebar">
+		<div id="sidebar" className="sidebar-shown">
 		  <SearchBar searchTerm={this.state.searchTerm}
-	                     updateTerm={this.updateTerm}/>
+	                     updateTerm={this.updateTerm}
+	                     toggleSideBar={this.toggleSideBar}/>
 		  <ListResults searchTerm={this.state.searchTerm}
 	                       places={this.props.places}
 	                       map={this.props.map}

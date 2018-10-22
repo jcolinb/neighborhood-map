@@ -10,7 +10,7 @@ class App extends Component {
 	places: []
     }
 
-    getMap = () => { 
+    getMap = () => { //returns promise for googleMaps service. Adapted from tremby's solution on stack overflow
 	this.mapPromise = new Promise((res) => {
 	    window.resolvePromise = () => {
 		res(window.google);
@@ -27,34 +27,38 @@ class App extends Component {
 	});
     }
 
-    photoize = (places) => {
-	return Promise.all(places.map((place) =>
-				      fetch(`https://api.foursquare.com/v2/venues/${place.id}/photos?client_id=ZRDNRR3NRFHOQ0EKGVZSCELHE1F4JS1Y1DFXHVSJFARU4GNR&client_secret=MEDYDO5VJ4F23YFQFYHNAWYCLLOB2FWOMER3YKYCVKLFALX1&limit=1&v=20181010`).then((res) => res.json()))
-			  ).then((photos) => photos.map(({response}) => response.photos.items[0].prefix + '300x300' + response.photos.items[0].suffix))
-	    .then((photoURLs) => places.map((place,i) => {place.photo = photoURLs[i];return place}))
+    photoize = (places) => { //takes array of places objects and fetches and sets photo from foursquare
+	return Promise.all(places.map((place) => //waits for all requests to return
+			       fetch(`https://api.foursquare.com/v2/venues/${place.id}/photos?client_id=ZRDNRR3NRFHOQ0EKGVZSCELHE1F4JS1Y1DFXHVSJFARU4GNR&client_secret=MEDYDO5VJ4F23YFQFYHNAWYCLLOB2FWOMER3YKYCVKLFALX1&limit=1&v=20181010`)
+			       .then((res) => res.json()))
+		   )
+	    .then((photos) => photos.map(({response}) => response.photos.items[0].prefix + '300x300' + response.photos.items[0].suffix)) //convert response to image URL
+	    .then((photoURLs) => places.map((place,i) => {place.photo = photoURLs[i];return place})) //set photo URL to photo property of place
+	    .catch((err) => console.log(err))
     }
     
-    fetchPlaces = () => {
+    fetchPlaces = () => { //fetch bar locations for neighborhood from foursquare, return formatted array of place objects
 	const url = 'https://api.foursquare.com/v2/venues/explore?';
-	const date = new Date();
+	const date = new Date(); //get current date and format for request URL
 	const formattedDate = `${date.getFullYear()}${(date.getMonth() +1)}${date.getDate()}`;
 	const clientId = 'ZRDNRR3NRFHOQ0EKGVZSCELHE1F4JS1Y1DFXHVSJFARU4GNR';
 	const clientSecret = 'MEDYDO5VJ4F23YFQFYHNAWYCLLOB2FWOMER3YKYCVKLFALX1';
-	return fetch(`${url}client_id=${clientId}&client_secret=${clientSecret}&v=${formattedDate}&limit=10&ll=40.014986,-83.011464&radius=1000&section=drinks`)
+	return fetch(`${url}client_id=${clientId}&client_secret=${clientSecret}&v=${formattedDate}&limit=5&ll=40.014986,-83.011464&radius=1000&section=drinks`)
 	    .then((res) => res.json())
-	    .then(({response}) => response.groups[0].items.map(({venue}) => {
-		return {
+	    .then(({response}) => response.groups[0].items.map(({venue}) => { //pick venues out of response
+		return { //format to local data structure
 		    name: venue.name.toLowerCase(),
 		    id: venue.id,
 		    address: venue.location.formattedAddress,
 		    lat: venue.location.lat,
 		    lng: venue.location.lng
 		};
-	    }))
+	    })) //returns array of places objects
 	    .catch((err)=> console.log(err));
     }
     
-    markerize = ([[google,map],places])  => {
+    markerize = ([[google,map],places])  => { //adds marker and infoWindow to each place in places array
+
 	const markerizedPlaces = places.map((place) => {
 	    place.marker = new google.maps.Marker(
 		{
@@ -67,9 +71,9 @@ class App extends Component {
 	    );
 	    place.infoWindow = new google.maps.InfoWindow(
 		{
-		    content: `<div class='info-window'>
-	                        <h4>${place.name}</h4>
-                                <div style='background-image:${place.photo}' class='venue-photo'></div>
+		    content: `<div class='info-window' tabIndex='1'>
+	                        <h3>${place.name}</h3>
+                                <div style='background-image:url(${place.photo})' class='venue-photo'></div>
 	                        <p>${place.address[0]}</p>
 	                        <p>${place.address[1]}</p>
 	                        <p>${place.address[2]}</p>
@@ -79,13 +83,14 @@ class App extends Component {
 	    return place;
 	});
 	return [google,map,markerizedPlaces];
+	
     }
     
-    componentWillMount = this.getMap
+    componentWillMount = this.getMap //start googleMaps service loading, returns a promise for map
 
     componentDidMount = () => {
 	Promise.all([
-	    this.mapPromise.then((google) => {
+	    this.mapPromise.then((google) => { //resolve map promise
 	        const map = new google.maps.Map(
 		    document.getElementById('map'),
 		    {
@@ -95,9 +100,9 @@ class App extends Component {
 		);
 		return [google,map];
 	    }),
-	    this.fetchPlaces().then(this.photoize)
-	]).then(this.markerize)
-	    .then(([google,map,places]) => this.setState({google,map,places}));
+	    this.fetchPlaces().then(this.photoize) //fetch places and photos
+	]).then(this.markerize) //once all requests resolve, add markers to places
+	    .then(([google,map,places]) => this.setState({google,map,places})); //store data in state
     }
     
     render() {
@@ -105,8 +110,7 @@ class App extends Component {
 		<div id="container">
 		  <div id="map" tabIndex="-1"></div>
 		  <SideBar places={this.state.places}
-	                   map={this.state.map}
-	                   google={this.state.google}/>
+	                   map={this.state.map}/>
 		</div>
 	)
     }
