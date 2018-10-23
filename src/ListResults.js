@@ -22,6 +22,7 @@ class ListResults extends Component {
 			return (
 				<li key={place.id}
 			            onClick={() => this.toggleInfoWindow(place)}
+			    onKeyPress={(e) => {if (e.key === 'Enter') {this.toggleInfoWindow(place);}}}
 				    tabIndex="1">
 				  {place.name}
 			        </li>
@@ -38,6 +39,7 @@ class ListResults extends Component {
 			     place.marker.setMap(this.props.map);
 			     return (<li key={place.id}
 				         onClick={() => this.toggleInfoWindow(place)}
+				     onKeyPress={(e) => {if (e.key === 'Enter') {this.toggleInfoWindow(place);}}}				     
 				         tabIndex="1">{place.name}</li>)
 			 })
 		     
