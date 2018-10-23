@@ -5,6 +5,7 @@ class ListResults extends Component {
     toggleInfoWindow = (place) => {
 	this.props.places.map((place) => place.infoWindow.close());
 	place.infoWindow.open(this.props.map,place.marker);
+	this.props.toggleSideBar();
 	setTimeout(() => document.getElementsByClassName('info-window')[0].focus());
     }
 

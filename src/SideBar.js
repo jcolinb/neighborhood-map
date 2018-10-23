@@ -37,6 +37,7 @@ class SideBar extends Component {
 	                       places={this.props.places}
 	                       map={this.props.map}
 	                       google={this.props.google}
+	                       toggleSideBar={this.toggleSideBar}
 		/>
 		</div>
 	)
