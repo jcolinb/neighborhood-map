@@ -4,7 +4,7 @@ class SearchBar extends Component {
     render() {
 	return (
 		<div id = "search-bar">
-		<p onClick={this.props.toggleSideBar} style={{padding:'3px'}}>☰</p>
+		<p onClick={this.props.toggleSideBar}>☰</p>
 		<input type="text"
 	               value={this.props.searchTerm}
 	               placeholder="search places"

@@ -92,7 +92,7 @@ class App extends Component {
 	    return res.json();
 	}
 	else {
-	    throw 'an error occurred while loading data';
+	    throw Error('an error occurred while loading data');
 	}
     }
     
@@ -113,7 +113,7 @@ class App extends Component {
 	    this.fetchPlaces().then(this.photoize) //fetch places and photos
 	]).then(this.markerize) //once all requests resolve, add markers to places
 	    .then(([google,map,places]) => this.setState({google,map,places})) //store data in state
-	    .catch((err) => {alert(err);}); 
+	    .catch((err) => alert(err.message)); 
     }
     
     render() {

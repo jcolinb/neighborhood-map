@@ -5,7 +5,7 @@ class ListResults extends Component {
     toggleInfoWindow = (place) => {
 	this.props.places.map((place) => place.infoWindow.close());
 	place.infoWindow.open(this.props.map,place.marker);
-	document.getElementsByClassName('info-window')[0].focus();
+	setTimeout(() => document.getElementsByClassName('info-window')[0].focus());
     }
 
     componentDidUpdate = () => this.props.places.map((place) => place.infoWindow.close())
@@ -22,7 +22,7 @@ class ListResults extends Component {
 			return (
 				<li key={place.id}
 			            onClick={() => this.toggleInfoWindow(place)}
-				    tabIndex="2">
+				    tabIndex="1">
 				  {place.name}
 			        </li>
 			)
@@ -38,7 +38,7 @@ class ListResults extends Component {
 			     place.marker.setMap(this.props.map);
 			     return (<li key={place.id}
 				         onClick={() => this.toggleInfoWindow(place)}
-				         tabIndex="2">{place.name}</li>)
+				         tabIndex="1">{place.name}</li>)
 			 })
 		     
 		 )
