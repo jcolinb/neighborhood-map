@@ -30,11 +30,12 @@ class App extends Component {
     photoize = (places) => { //takes array of places objects and fetches and sets photo from foursquare
 	return Promise.all(places.map((place) => //waits for all requests to return
 			       fetch(`https://api.foursquare.com/v2/venues/${place.id}/photos?client_id=ZRDNRR3NRFHOQ0EKGVZSCELHE1F4JS1Y1DFXHVSJFARU4GNR&client_secret=MEDYDO5VJ4F23YFQFYHNAWYCLLOB2FWOMER3YKYCVKLFALX1&limit=1&v=20181010`)
-			       .then((res) => res.json()))
-		   )
+				      .then(this.handleErrors)
+				     )
+			  )
 	    .then((photos) => photos.map(({response}) => response.photos.items[0].prefix + '300x300' + response.photos.items[0].suffix)) //convert response to image URL
 	    .then((photoURLs) => places.map((place,i) => {place.photo = photoURLs[i];return place})) //set photo URL to photo property of place
-	    .catch((err) => console.log(err))
+
     }
     
     fetchPlaces = () => { //fetch bar locations for neighborhood from foursquare, return formatted array of place objects
@@ -44,7 +45,7 @@ class App extends Component {
 	const clientId = 'ZRDNRR3NRFHOQ0EKGVZSCELHE1F4JS1Y1DFXHVSJFARU4GNR';
 	const clientSecret = 'MEDYDO5VJ4F23YFQFYHNAWYCLLOB2FWOMER3YKYCVKLFALX1';
 	return fetch(`${url}client_id=${clientId}&client_secret=${clientSecret}&v=${formattedDate}&limit=5&ll=40.014986,-83.011464&radius=1000&section=drinks`)
-	    .then((res) => res.json())
+	    .then(this.handleErrors)
 	    .then(({response}) => response.groups[0].items.map(({venue}) => { //pick venues out of response
 		return { //format to local data structure
 		    name: venue.name.toLowerCase(),
@@ -54,7 +55,7 @@ class App extends Component {
 		    lng: venue.location.lng
 		};
 	    })) //returns array of places objects
-	    .catch((err)=> console.log(err));
+
     }
     
     markerize = ([[google,map],places])  => { //adds marker and infoWindow to each place in places array
@@ -85,6 +86,15 @@ class App extends Component {
 	return [google,map,markerizedPlaces];
 	
     }
+
+    handleErrors = (res) => {
+	if (res.ok) { 
+	    return res.json();
+	}
+	else {
+	    throw 'an error occurred while loading data';
+	}
+    }
     
     componentWillMount = this.getMap //start googleMaps service loading, returns a promise for map
 
@@ -102,7 +112,8 @@ class App extends Component {
 	    }),
 	    this.fetchPlaces().then(this.photoize) //fetch places and photos
 	]).then(this.markerize) //once all requests resolve, add markers to places
-	    .then(([google,map,places]) => this.setState({google,map,places})); //store data in state
+	    .then(([google,map,places]) => this.setState({google,map,places})) //store data in state
+	    .catch((err) => {alert(err);}); 
     }
     
     render() {

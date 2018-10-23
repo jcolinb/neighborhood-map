@@ -100,14 +100,14 @@
     }
 
     100% {
-	height: 30vh;
+	height: 50vh;
 	width: 20vw;
     }
 }
 
 @keyframes fold-in {
     0% {
-	height: 30vh;
+	height: 50vh;
 	width: 20vw;
     }
 
