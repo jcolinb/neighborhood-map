@@ -121,7 +121,8 @@ class App extends Component {
 		<div id="container">
 		  <div id="map" tabIndex="-1"></div>
 		  <SideBar places={this.state.places}
-	                   map={this.state.map}/>
+	                   map={this.state.map}
+	                   google={this.state.google}/>
 		</div>
 	)
     }

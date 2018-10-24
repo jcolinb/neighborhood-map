@@ -4,7 +4,9 @@ class ListResults extends Component {
 
     toggleInfoWindow = (place) => {
 	this.props.places.map((place) => place.infoWindow.close());
+	this.props.places.map((place) => place.marker.setAnimation(null));
 	place.infoWindow.open(this.props.map,place.marker);
+	place.marker.setAnimation(this.props.google.maps.Animation.BOUNCE);
 	this.props.toggleSideBar();
 	setTimeout(() => document.getElementsByClassName('info-window')[0].focus());
     }
