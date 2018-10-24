@@ -33,8 +33,7 @@ class SideBar extends Component {
 		  <SearchBar searchTerm={this.state.searchTerm}
 	                     updateTerm={this.updateTerm}
 	                     toggleSideBar={this.toggleSideBar}/>
-		  <ListResults searchTerm={this.state.searchTerm}
-	                       places={this.props.places}
+		  <ListResults places={(!this.state.searchTerm) ? this.props.places : this.props.places.filter((place) => place.name.includes(this.state.searchTerm))}
 	                       map={this.props.map}
 	                       google={this.props.google}
 	                       toggleSideBar={this.toggleSideBar}
