@@ -74,7 +74,10 @@ class App extends Component {
 		{
 		    content: `<div class='info-window' tabIndex='1'>
 	                        <h3>${place.name}</h3>
-                                <div style='background-image:url(${place.photo})' class='venue-photo'></div>
+                                <div style='background-image:url(${place.photo})' 
+                                     class='venue-photo'
+                                     role='img'
+                                     aria-label='an image of ${place.name}'></div>
 	                        <p>${place.address[0]}</p>
 	                        <p>${place.address[1]}</p>
 	                        <p>${place.address[2]}</p>
