@@ -7,20 +7,19 @@ class SideBar extends Component {
 	searchTerm: '',
     }
 
-    updateTerm = (str) => {
-	this.props.places.map((place) => {
-	    if (!place.name.includes(str)) {
-		place.marker.setMap(null);
-	    }
-	    return null
+    updateTerm = (str) => { //runs every time filter input changes & keeps searchbar value in sync with list 
+	this.props.places.map((place) => { //close infoWindow and remove current markers from map
+	    place.marker.setMap(null);
+	    place.infoWindow.close();
+	    return null;
 	});
-	if (document.getElementById('sidebar').className === 'sidebar-hidden' && str) {
+	if (document.getElementById('sidebar').className === 'sidebar-hidden' && str) { //If menu is collapsed when a search occurs, open it
 	    this.toggleSideBar();
 	}
 	this.setState({searchTerm: str.toLowerCase()});
     }
 
-    toggleSideBar = () => {
+    toggleSideBar = () => { //open and close menu in sidebar
 	const SideBar = document.getElementById('sidebar');
 	(SideBar.className === 'sidebar-hidden') ?
 	    SideBar.className = 'sidebar-shown' :
@@ -33,11 +32,14 @@ class SideBar extends Component {
 		  <SearchBar searchTerm={this.state.searchTerm}
 	                     updateTerm={this.updateTerm}
 	                     toggleSideBar={this.toggleSideBar}/>
-		  <ListResults places={(!this.state.searchTerm) ? this.props.places : this.props.places.filter((place) => place.name.includes(this.state.searchTerm))}
+		  <ListResults places={(!this.state.searchTerm) ?
+				         this.props.places :
+				         this.props.places.filter((place) => place.name.includes(this.state.searchTerm))}
 	                       map={this.props.map}
 	                       google={this.props.google}
 	                       toggleSideBar={this.toggleSideBar}
-		/>
+		  />
+		  <span>bar info provided by Foursquare</span>
 		</div>
 	)
     }

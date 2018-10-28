@@ -7,14 +7,14 @@ class ListResults extends Component {
 	this.props.places.map((place) => place.marker.setAnimation(null));
 	place.infoWindow.open(this.props.map,place.marker);
 	place.marker.setAnimation(this.props.google.maps.Animation.BOUNCE);
-	this.props.toggleSideBar();
 	setTimeout(() => document.getElementsByClassName('info-window')[0].focus());
     }
 
-    componentDidUpdate = () => {
+    componentDidUpdate = () => { //set markers for new filtered list
 	this.props.places.map((place) => {
 	    place.marker.setMap(this.props.map);
 	    place.marker.addListener('click',() => this.toggleInfoWindow(place));
+	    return null;
 	});
     }
     

@@ -24,6 +24,10 @@
     width: 80%;
 }
 
+#sidebar span {
+    font-size: 0.5em;
+}
+
 .sidebar-shown ol {
     width: 100%;
     list-style-type: none;

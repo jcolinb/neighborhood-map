@@ -95,11 +95,11 @@ class App extends Component {
 	    return res.json();
 	}
 	else {
-	    throw Error('an error occurred while loading data');
+	    throw Error('an error occurred while loading data from Foursquare');
 	}
     }
     
-    componentWillMount = this.getMap //start googleMaps service loading, returns a promise for map
+    componentWillMount = this.getMap //start googleMaps service loading, returns a promise for map service
 
     componentDidMount = () => {
 	Promise.all([
@@ -108,7 +108,8 @@ class App extends Component {
 		    document.getElementById('map'),
 		    {
 			center: {lat:40.014986, lng:-83.011464},
-			zoom: 13
+			zoom: 16,
+			mapTypeControl: false
 		    }
 		);
 		return [google,map];
