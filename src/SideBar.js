@@ -26,6 +26,17 @@ class SideBar extends Component {
 	    SideBar.className = 'sidebar-hidden'
     }
 
+    changeSelection = (place) => {  //controls map animations, displays info window, shifts focus to selected info window
+	this.props.places.map((place) => place.infoWindow.close());
+	this.props.places.map((place) => place.marker.setAnimation(null));
+	place.infoWindow.open(this.props.map,place.marker);
+	place.marker.setAnimation(this.props.google.maps.Animation.BOUNCE);
+	setTimeout(() => document.getElementsByClassName('info-window')[0].focus());
+	if (window.innerWidth <= 800 && document.getElementById('sidebar').className === 'sidebar-shown') {
+	    this.toggleSideBar();
+	}
+    }
+    
     render() {
 	return (
 		<div id="sidebar" className="sidebar-shown">
@@ -38,6 +49,7 @@ class SideBar extends Component {
 	                       map={this.props.map}
 	                       google={this.props.google}
 	                       toggleSideBar={this.toggleSideBar}
+	                       changeSelection={this.changeSelection}
 		  />
 		  <span>bar info provided by Foursquare</span>
 		</div>
