@@ -1,7 +1,7 @@
 ## Washington Beach Bar Guide
 
 An up to date list of bar recommendations in the heart of Washington Beach,
-provided by [Foursquare](www.foursquare.com). Map service provided by [GoogleMaps](www.google.com/maps)
+provided by [Foursquare](https://www.foursquare.com). Map service provided by [GoogleMaps](https://www.google.com/maps)
 
 ### for development
 
@@ -21,4 +21,4 @@ note: You will need to be connected to the internet for the app to access resour
 
 note: You will need to be connected to the internet for the app to access resources.
 
-made in [React](www.reactjs.com)
+made in [React](https://reactjs.org)
