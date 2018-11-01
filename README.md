@@ -6,11 +6,19 @@ provided by [Foursquare](www.foursquare.com). Map service provided by [GoogleMap
 ### for development
 
 1. clone the repository
-2. run ```npm start``` to start the development server
-3. navigate to ```localhost:3000``` in your favorite browser
+2. run ```npm install``` to pull in dependencies
+3. run ```npm start``` to start the development server
+4. navigate to ```localhost:3000``` in your favorite browser
+
+note: You will need to be connected to the internet for the app to access resources.
 
 ### for production
 
 1. clone the repository
-2. run ```npm run build``` to build production version
-3. run a server of your choice from within the newly created ```build``` directory
+2. run ```npm install``` to pull in dependencies
+3. run ```npm run build``` to build production version
+4. run a server of your choice from within the newly created ```build``` directory
+
+note: You will need to be connected to the internet for the app to access resources.
+
+made in [React](www.reactjs.com)
