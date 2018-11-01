@@ -41,10 +41,11 @@ class App extends Component {
     fetchPlaces = () => { //fetch bar locations for neighborhood from foursquare, return formatted array of place objects
 	const url = 'https://api.foursquare.com/v2/venues/explore?';
 	const date = new Date(); //get current date and format for request URL
-	const formattedDate = `${date.getFullYear()}${(date.getMonth() +1)}${date.getDate()}`;
+	const day = (date.getDate()<10) ? `0${date.getDate()}` : `${date.getDate()}`;
+	const formattedDate = `${date.getFullYear()}${(date.getMonth() +1)}${day}`;
 	const clientId = 'ZRDNRR3NRFHOQ0EKGVZSCELHE1F4JS1Y1DFXHVSJFARU4GNR';
 	const clientSecret = 'MEDYDO5VJ4F23YFQFYHNAWYCLLOB2FWOMER3YKYCVKLFALX1';
-	return fetch(`${url}client_id=${clientId}&client_secret=${clientSecret}&v=20181101&limit=2&ll=40.014986,-83.011464&radius=1000&section=drinks`)
+	return fetch(`${url}client_id=${clientId}&client_secret=${clientSecret}&v=20181101&limit=5&ll=40.014986,-83.011464&radius=1000&section=drinks`)
 	    .then(this.handleErrors)
 	    .then(({response}) => response.groups[0].items.map(({venue}) => { //pick venues out of response
 		return { //format to local data structure
