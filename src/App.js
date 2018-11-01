@@ -10,7 +10,7 @@ class App extends Component {
 	places: []
     }
 
-    getMap = () => { //returns promise for googleMaps service. Adapted from tremby's solution on stack overflow
+    getMap = () => { //returns promise for googleMaps service. Adapted from tremby's solution @ https://stackoverflow.com/questions/48493960/using-google-map-in-react-component
 	this.mapPromise = new Promise((res) => {
 	    window.resolvePromise = () => {
 		res(window.google);
