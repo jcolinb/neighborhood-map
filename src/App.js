@@ -44,7 +44,7 @@ class App extends Component {
 	const formattedDate = `${date.getFullYear()}${(date.getMonth() +1)}${date.getDate()}`;
 	const clientId = 'ZRDNRR3NRFHOQ0EKGVZSCELHE1F4JS1Y1DFXHVSJFARU4GNR';
 	const clientSecret = 'MEDYDO5VJ4F23YFQFYHNAWYCLLOB2FWOMER3YKYCVKLFALX1';
-	return fetch(`${url}client_id=${clientId}&client_secret=${clientSecret}&v=${formattedDate}&limit=10&ll=40.014986,-83.011464&radius=1000&section=drinks`)
+	return fetch(`${url}client_id=${clientId}&client_secret=${clientSecret}&v=20181101&limit=2&ll=40.014986,-83.011464&radius=1000&section=drinks`)
 	    .then(this.handleErrors)
 	    .then(({response}) => response.groups[0].items.map(({venue}) => { //pick venues out of response
 		return { //format to local data structure
